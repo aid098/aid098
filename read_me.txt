@@ -1,5 +1,7 @@
 # FC 일요일 - 축구 동호회 사이트
 
+https://tinyurl.com/sun-fc
+
 ## 폴더 구성
 ```
 fc-sunday/
