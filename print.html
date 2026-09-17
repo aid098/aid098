@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>출석/득점 기록지 · FC 일요일</title>
+  
+  <!-- 메타 기본 정보 -->
+  <meta name="description" content="FC 일요일 축구 모임의 참석 횟수와 골 기록을 확인할 수 있습니다." />
+  <meta name="author" content="FC 일요일" />
+  <meta name="application-name" content="FC 일요일" />
+
+  <!-- iPhone / iPad -->
+  <meta name="apple-mobile-web-app-title" content="FC 일요일" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <!-- 카카오톡 등 링크 공유 미리보기 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FC 일요일" />
+  <meta property="og:description" content="FC 일요일 축구 모임의 참석 횟수와 골 기록을 확인할 수 있습니다." />
+  <meta property="og:site_name" content="FC 일요일" />
+
+  <!-- Twitter / X 링크 공유 미리보기 -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FC 일요일" />
+  <meta name="twitter:description" content="FC 일요일 축구 모임의 참석 횟수와 골 기록을 확인할 수 있습니다." />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- favicon -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">  
+  <style>
+    /* 이 페이지 전용 스타일 (인쇄용 체크시트) */
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .print-btn {
+      border: 1px solid var(--ink);
+      background: var(--bg);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .fill-fields {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    .fill-field {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .fill-field .fill-label {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .fill-line {
+      display: inline-block;
+      min-width: 160px;
+      border-bottom: 1px solid var(--ink);
+      height: 22px;
+    }
+
+    .sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    .sheet-table th,
+    .sheet-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+    }
+
+    .sheet-table th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .col-no {
+      width: 32px;
+      color: var(--muted);
+    }
+
+    .col-check {
+      width: 70px;
+      text-align: center;
+    }
+
+    .col-goal {
+      width: 90px;
+    }
+
+    .checkbox {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid var(--ink);
+    }
+
+    .write-line {
+      display: inline-block;
+      width: 100%;
+      border-bottom: 1px solid var(--line);
+      height: 20px;
+    }
+
+    .guest-name-cell {
+      min-width: 90px;
+    }
+
+    .sheet-section-title {
+      margin-top: 36px;
+    }
+
+    .sheet-note {
+      margin-top: 28px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .sheet-caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    /* 화면에서는 안내용 색이 보이지만, 인쇄할 때는 아래 규칙이 적용됩니다 */
+    @media print {
+      .site-header,
+      .print-btn,
+      .page-desc,
+      .sheet-note,
+      .sheet-caption {
+        display: none !important;
+      }
+
+      main {
+        padding: 0;
+        max-width: 100%;
+      }
+
+      body {
+        font-size: 12pt;
+      }
+
+      .sheet-table th,
+      .sheet-table td {
+        padding: 6px 6px;
+      }
+
+      .fill-fields {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body data-page="print">
+  <header class="site-header">
+    <div class="nav-inner">
+      <span class="brand">FC 일요일</span>
+      <nav class="nav-links">
+        <a href="index.html" data-nav="home">홈</a>
+        <a href="members.html" data-nav="members">전체 회원</a>
+        <a href="rankings.html" data-nav="rankings">랭킹</a>
+        <a href="history.html" data-nav="history">경기 기록</a>
+        <a href="print.html" data-nav="print">출석/득점 기록지</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="sheet-header">
+      <div>
+        <h1 class="page-title">출석 · 득점 기록지</h1>
+        <p class="page-desc">경기 당일 인쇄해서 체크하고, 나중에 js/data.js에 옮겨 적으세요.</p>
+      </div>
+      <button class="print-btn" onclick="window.print()">인쇄하기</button>
+    </div>
+
+    <div class="fill-fields">
+      <div class="fill-field">
+        <span class="fill-label">날짜</span>
+        <span class="fill-line">2026.09.13 (일)</span>
+      </div>
+      <div class="fill-field">
+        <span class="fill-label">장소</span>
+        <span class="fill-line">안산 풋살 경기장</span>
+      </div>
+    </div>
+
+    <p class="sheet-caption">최근 경기(<span id="ref-match-info"></span>) 참여 인원 기준으로 이름을 미리 채워뒀어요. 용병 칸과 남는 자리는 당일 직접 적으세요.</p>
+
+    <table class="sheet-table">
+      <thead>
+        <tr>
+          <th class="col-no">#</th>
+          <th>이름</th>
+          <th class="col-check">출석</th>
+          <th class="col-goal">골</th>
+        </tr>
+      </thead>
+      <tbody id="roster-rows"></tbody>
+    </table>
+
+    <p class="sheet-note">
+      사용법: 경기 전 이 페이지를 인쇄해서 가져가세요. 이름이 채워진 칸은 최근 경기 참여자 기준이니
+      실제로 온 사람만 출석 칸을 체크하고, 빈 칸에는 새로 온 사람 이름이나 용병 번호를 적으면 됩니다.
+      골 칸에는 넣은 골 수를 적으세요. 경기 끝난 뒤 이 기록을 보고 js/data.js에 새 경기로 옮겨 적으면 사이트에 반영됩니다.
+    </p>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script>
+    // 인원 목표치: 이 숫자보다 부족하면 빈 줄을 추가해서 채웁니다 (풋살 기준 12명)
+    const TARGET_HEADCOUNT = 12;
+
+    const matches = [...CLUB_DATA.matches].sort((a, b) => (a.date < b.date ? -1 : 1));
+    const latest = matches.length ? matches[matches.length - 1] : null;
+
+    const registeredNames = [];
+    let guestCountLastMatch = 0;
+
+    if (latest) {
+      document.getElementById("ref-match-info").textContent = `${latest.date} · ${latest.location}`;
+      latest.attendees.forEach((a) => {
+        if (a.id) {
+          const m = CLUB_DATA.members.find((mm) => mm.id === a.id);
+          if (m) registeredNames.push(m.name);
+        } else if (a.guest) {
+          guestCountLastMatch += 1;
+        }
+      });
+    } else {
+      document.getElementById("ref-match-info").textContent = "이전 경기 없음";
+    }
+
+    // 빈 줄 개수 = (목표 인원 - 이름 채워진 인원) 과 (지난 번 용병 수) 중 더 큰 쪽
+    const blankRowCount = Math.max(TARGET_HEADCOUNT - registeredNames.length, guestCountLastMatch);
+
+    const rosterRows = document.getElementById("roster-rows");
+    const filledRows = registeredNames
+      .map(
+        (name, i) => `
+        <tr>
+          <td class="col-no">${i + 1}</td>
+          <td>${name}</td>
+          <td class="col-check"><span class="checkbox"></span></td>
+          <td class="col-goal"><span class="write-line"></span></td>
+        </tr>`
+      )
+      .join("");
+
+    const blankRows = Array.from({ length: blankRowCount })
+      .map(
+        (_, i) => `
+        <tr>
+          <td class="col-no">${registeredNames.length + i + 1}</td>
+          <td class="guest-name-cell"><span class="write-line"></span></td>
+          <td class="col-check"><span class="checkbox"></span></td>
+          <td class="col-goal"><span class="write-line"></span></td>
+        </tr>`
+      )
+      .join("");
+
+    rosterRows.innerHTML = filledRows + blankRows;
+  </script>
+</body>
+</html>
