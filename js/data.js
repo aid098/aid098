@@ -43,7 +43,6 @@ const CLUB_DATA = {
   members: [
     { id: "k_jongyoon",   name: "김종윤" },
     { id: "y_yeongjoon",    name: "윤영준" },
-    { id: "y_inseok",  name: "연인석" },    
     { id: "s_geonyeong",  name: "신건영" },
     { id: "j_jinyeong",  name: "장진영" },    
     { id: "c_enwoo",  name: "최은우" },    
